@@ -14,7 +14,7 @@ const poems = [
     title: "GARDEN",
     date: "2026",
     tags: ["love", "loss"],
-    cover: "garden.png",
+    cover: "garden.PNG",
     lines: [
       "How do you manage to move me from frying pan to fire every time you cross my mind.",
       "You left my calm soul looking for a bottle to drown itself in.",
