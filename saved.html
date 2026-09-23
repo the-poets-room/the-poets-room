@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saved — The Poet's Room</title>
+  <link rel="alternate" type="application/rss+xml" title="The Poet's Room" href="feed.xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="loading">
+
+  <div class="scroll-progress" id="scroll-progress"></div>
+
+  <header class="site-header">
+    <a href="index.html" class="brand">The Poet's Room</a>
+    <nav>
+      <a href="about.html">About</a>
+      <a href="saved.html">Saved</a>
+      <button id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h2 class="hero-title">Your shelf</h2>
+      <p class="hero-sub">poems you've kept close.</p>
+    </section>
+
+    <section class="poem-grid-section">
+      <div class="poem-grid" id="saved-grid"></div>
+      <p class="empty-shelf" id="empty-shelf" style="display:none;">
+        Nothing saved yet. Tap 🤍 on any poem to keep it here.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; <span id="year"></span> Privilege Akrofi · Privilege the Poet</p>
+  </footer>
+
+  <script src="poems.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
