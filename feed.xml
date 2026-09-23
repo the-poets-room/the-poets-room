@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>The Poet's Room</title>
+    <link>https://the-poets-room.github.io/the-poets-room/</link>
+    <description>Poems by Privilege Akrofi · Privilege the Poet</description>
+    <language>en</language>
+    <atom:link href="https://the-poets-room.github.io/the-poets-room/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Morning Light</title>
+      <link>https://the-poets-room.github.io/the-poets-room/poem.html?id=the-morning-light</link>
+      <guid>https://the-poets-room.github.io/the-poets-room/poem.html?id=the-morning-light</guid>
+      <pubDate>Sat, 01 Mar 2025 09:00:00 GMT</pubDate>
+      <description>The morning light creeps in so slow, a golden tide across the floor…</description>
+    </item>
+  </channel>
+</rss>
