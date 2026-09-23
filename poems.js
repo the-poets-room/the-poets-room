@@ -12,7 +12,7 @@ const poems = [
   {
     id: "garden",
     title: "GARDEN",
-    date: "2025",
+    date: "2026",
     tags: ["love", "loss"],
     cover: "garden.png",
     lines: [
