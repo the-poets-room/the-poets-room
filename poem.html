@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Poem — The Poet's Room</title>
+  <meta name="description" content="A poem from The Poet's Room." />
+  <link rel="alternate" type="application/rss+xml" title="The Poet's Room" href="feed.xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="loading">
+
+  <div class="scroll-progress" id="scroll-progress"></div>
+
+  <header class="site-header">
+    <a href="index.html" class="brand">The Poet's Room</a>
+    <nav>
+      <a href="about.html">About</a>
+      <a href="saved.html">Saved</a>
+      <button id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+    </nav>
+  </header>
+
+  <main class="poem-page" id="poem-page">
+    <div class="poem-toolbar">
+      <a href="index.html" class="back-link">← back to all poems</a>
+      <div class="toolbar-actions">
+        <button id="bookmark-btn" title="Save this poem">🤍</button>
+        <button id="share-btn" title="Make a quote card">🖼️</button>
+        <button id="focus-toggle" title="Focus reading mode">📖</button>
+        <button id="font-down" title="Smaller text">A−</button>
+        <button id="font-up" title="Larger text">A+</button>
+      </div>
+    </div>
+
+    <article class="poem-article">
+      <div class="poem-cover" id="poem-cover"></div>
+      <h1 id="poem-title" class="poem-title"></h1>
+      <p id="poem-meta" class="poem-meta"></p>
+      <div id="poem-tags" class="poem-tags"></div>
+      <div id="poem-body" class="poem-body"></div>
+    </article>
+
+    <section class="reactions">
+      <p class="reactions-label">whisper back…</p>
+      <div class="reaction-buttons">
+        <button data-reaction="🥲 moved me" title="Moved me">🥲</button>
+        <button data-reaction="🤍 loved it" title="Loved it">🤍</button>
+        <button data-reaction="🌙 stayed with me" title="Stayed with me">🌙</button>
+      </div>
+      <p id="reaction-status" class="reaction-status"></p>
+    </section>
+
+    <nav class="poem-nav">
+      <button id="prev-poem" class="nav-btn">← previous</button>
+      <button id="next-poem" class="nav-btn">next →</button>
+    </nav>
+    <p class="keyboard-hint">tip: use ← and → keys to move between poems</p>
+
+    <section class="comments">
+      <h3>Leave a word</h3>
+      <p class="comments-note">Your note comes straight to the poet's inbox. 🤍</p>
+      <form id="comment-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <input type="hidden" name="poem" id="comment-poem" />
+        <input type="text" name="name" placeholder="Your name (optional)" />
+        <textarea name="message" rows="5" placeholder="Your thoughts on this poem…" required></textarea>
+        <button type="submit">Send</button>
+        <p id="form-status" class="form-status"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; <span id="year"></span> Privilege Akrofi · Privilege the Poet</p>
+  </footer>
+
+  <div class="quote-modal" id="quote-modal" aria-hidden="true">
+    <div class="quote-modal-inner">
+      <button class="quote-close" id="quote-close" aria-label="Close">✕</button>
+      <canvas id="quote-canvas" width="1080" height="1080"></canvas>
+      <div class="quote-controls">
+        <label for="quote-line-select">Pick a line</label>
+        <select id="quote-line-select"></select>
+        <div class="quote-actions">
+          <button id="quote-download">Download</button>
+          <button id="quote-copy">Copy</button>
+        </div>
+        <p class="quote-status" id="quote-status"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="poems.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
