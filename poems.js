@@ -46,31 +46,6 @@ const poems = [
       "trying to find the words to say sorry",
       "to the only thing that never asked nothing of me but attention."
     ]
-  },
-  {
-    id: "the-morning-light",
-    title: "The Morning Light",
-    date: "March 2025",
-    tags: ["hope", "morning"],
-    cover: "",
-    lines: [
-      "The morning light creeps in so slow,",
-      "a golden tide across the floor,",
-      "and in its warmth I start to know",
-      "what all my dreaming was here for."
-    ]
-  },
-  {
-    id: "quiet-streets",
-    title: "Quiet Streets",
-    date: "February 2025",
-    tags: ["solitude", "city"],
-    cover: "",
-    lines: [
-      "The streets at dusk forget their noise,",
-      "and hold their breath a while,",
-      "as if the world had lost its voice",
-      "and found a softer smile."
-    ]
   }
-];
+  
+    
