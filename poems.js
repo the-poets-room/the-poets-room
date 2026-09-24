@@ -12,9 +12,9 @@ const poems = [
   {
     id: "her-testament",
     title: "Her Testament",
-    date: "2025",
+    date: "2026",
     tags: ["love", "woman", "devotion"],
-    cover: "",
+    cover: "her-testament.PNG",
     lines: [
       "<span class=\"opener\">I want a woman.</span>",
       "Not just any type of woman,<br>but the type that stills my breath<br>when she walks into a room.",
@@ -94,7 +94,7 @@ const poems = [
   {
     id: "grandmas-kitchen",
     title: "Grandma's Kitchen",
-    date: "2025",
+    date: "2026",
     tags: ["family", "home", "ghana", "legacy"],
     cover: "grandmas-kitchen.PNG",
     lines: [
@@ -134,7 +134,7 @@ const poems = [
   {
     id: "garden",
     title: "GARDEN",
-    date: "2025",
+    date: "2026",
     tags: ["love", "loss"],
     cover: "garden.PNG",
     lines: [
