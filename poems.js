@@ -21,7 +21,7 @@ const poems = [
     title: "Grandma's Kitchen",
     date: "2026",
     tags: ["family", "home", "ghana", "legacy"],
-    cover: "grandmas-kitchen.PNG",
+    cover: "cover: "https://raw.githubusercontent.com/the-poets-room/the-poets-room/main/grandmas-kitchen.PNG",",
     lines: [
       "In the heart of Accra, where the sun kisses the rusted rooftops and the air hums with the rhythm of palm fronds, there lies a kitchen, a sanctuary of love and sustenance. It belongs to Grandma Akua, the matriarch of our family, her laughter etched into the wooden beams, her wisdom simmering in the bubbling pots.",
       "",
