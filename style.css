@@ -16,14 +16,16 @@
   --poem-size: 1.2rem;
 }
 
+
 body.dark {
-  --bg: #1b1a18;
-  --bg-elev: #232220;
-  --ink: #ECE7DF;
-  --ink-soft: #a8a29a;
-  --rule: #33302c;
-  --shadow: 0 10px 30px rgba(0,0,0,0.35);
+  --bg: #462639;
+  --bg-elev: #563148;
+  --ink: #F2E6EC;
+  --ink-soft: #C9AEC0;
+  --rule: #6B4059;
+  --shadow: 0 10px 30px rgba(0,0,0,0.45);
 }
+
 
 html { scroll-behavior: smooth; }
 
