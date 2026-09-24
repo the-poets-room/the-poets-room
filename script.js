@@ -1,5 +1,5 @@
 /* =========================================================
-   THE POET'S ROOM — BEHAVIOUR (final, batch 1)
+   THE POET'S ROOM — BEHAVIOUR (batch 2)
    ========================================================= */
 
 const PALETTE = [
@@ -36,6 +36,20 @@ function initTheme() {
       applyRandomAccent();
     });
   }
+}
+
+/* ---------- Time-of-day wash (Batch 2, feature 37) ---------- */
+function initTimeOfDay() {
+  const h = new Date().getHours();
+  let wash = 'transparent';
+
+  if (h >= 5 && h < 8)         wash = 'rgba(255, 200, 180, 0.14)';   // dawn — pale rose
+  else if (h >= 8 && h < 12)   wash = 'transparent';                   // morning — pure cream
+  else if (h >= 12 && h < 17)  wash = 'rgba(255, 240, 210, 0.10)';    // afternoon — warm
+  else if (h >= 17 && h < 20)  wash = 'rgba(255, 180, 110, 0.16)';    // dusk — golden
+  else                         wash = 'rgba(120, 100, 140, 0.10)';    // night — lavender
+
+  document.documentElement.style.setProperty('--time-wash', wash);
 }
 
 function initGreeting() {
@@ -267,8 +281,10 @@ function renderPoem() {
   initQuoteCard(poem);
   initBreathPrelude(poem);
   initCandleTimer();
+  initVoiceReader(poem);
 }
 
+/* ---------- Breath prelude ---------- */
 function initBreathPrelude(poem) {
   const overlay = document.getElementById('breath-overlay');
   const circle = document.getElementById('breath-circle');
@@ -297,9 +313,7 @@ function initBreathPrelude(poem) {
   function step() {
     if (i >= cycle.length) {
       overlay.classList.add('done');
-      setTimeout(() => {
-        writePoem(poem);
-      }, 600);
+      setTimeout(() => { writePoem(poem); }, 600);
       return;
     }
     const phase = cycle[i];
@@ -349,6 +363,7 @@ function writePoem(poem) {
   writeLine();
 }
 
+/* ---------- Candle timer ---------- */
 function initCandleTimer() {
   const btn = document.getElementById('candle-btn');
   const overlay = document.getElementById('candle-overlay');
@@ -398,6 +413,92 @@ function initCandleTimer() {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && overlay.classList.contains('open')) stop();
   });
+}
+
+/* ---------- Voice reader (Batch 2, feature 38) ---------- */
+function initVoiceReader(poem) {
+  const btn = document.getElementById('voice-btn');
+  const body = document.getElementById('poem-body');
+  if (!btn || !body || !poem) return;
+
+  if (!('speechSynthesis' in window)) {
+    btn.style.display = 'none';
+    return;
+  }
+
+  let speaking = false;
+
+  // Prefer an English voice if the browser offers one
+  function pickVoice() {
+    const voices = window.speechSynthesis.getVoices();
+    if (!voices.length) return null;
+    return voices.find(v => /en-GB/i.test(v.lang))
+        || voices.find(v => /en-US/i.test(v.lang))
+        || voices.find(v => /^en/i.test(v.lang))
+        || voices[0];
+  }
+
+  function stopSpeaking() {
+    window.speechSynthesis.cancel();
+    speaking = false;
+    btn.classList.remove('speaking');
+    btn.textContent = '🔊';
+    body.querySelectorAll('.line.reading').forEach(el => el.classList.remove('reading'));
+  }
+
+  function speak() {
+    speaking = true;
+    btn.classList.add('speaking');
+    btn.textContent = '⏸';
+
+    const lines = body.querySelectorAll('.line');
+    const plainLines = poem.lines.map(l => l.replace(/<[^>]+>/g, '').trim());
+
+    // speak line by line for the glow effect
+    let i = 0;
+    function nextLine() {
+      if (i >= plainLines.length || !speaking) {
+        if (i >= plainLines.length) stopSpeaking();
+        return;
+      }
+      const lineText = plainLines[i];
+      if (!lineText) { i++; nextLine(); return; }
+
+      // highlight
+      lines.forEach(el => el.classList.remove('reading'));
+      if (lines[i]) lines[i].classList.add('reading');
+
+      const u = new SpeechSynthesisUtterance(lineText);
+      u.rate = 0.85;
+      u.pitch = 1.02;
+      u.volume = 1;
+      const voice = pickVoice();
+      if (voice) u.voice = voice;
+
+      u.onend = () => {
+        i++;
+        setTimeout(nextLine, 420);
+      };
+      u.onerror = () => { stopSpeaking(); };
+
+      window.speechSynthesis.speak(u);
+    }
+
+    nextLine();
+  }
+
+  btn.addEventListener('click', () => {
+    if (speaking) stopSpeaking();
+    else speak();
+  });
+
+  // stop if the reader leaves
+  window.addEventListener('beforeunload', stopSpeaking);
+
+  // some browsers need voices to load asynchronously
+  if (window.speechSynthesis.getVoices().length === 0) {
+    window.speechSynthesis.onvoiceschanged = () => {};
+  }
 }
 
 function goToPoem(index) {
@@ -631,6 +732,7 @@ function initQuoteCard(currentPoem) {
 document.addEventListener('DOMContentLoaded', () => {
   applyRandomAccent();
   initTheme();
+  initTimeOfDay();
   initGreeting();
   initStreak();
   renderPoemOfTheDay();
