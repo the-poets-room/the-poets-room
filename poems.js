@@ -19,7 +19,7 @@ const poems = [
   {
     id: "grandmas-kitchen",
     title: "Grandma's Kitchen",
-    date: "2025",
+    date: "2026",
     tags: ["family", "home", "ghana", "legacy"],
     cover: "grandmas-kitchen.png",
     lines: [
@@ -59,7 +59,7 @@ const poems = [
   {
     id: "garden",
     title: "GARDEN",
-    date: "2025",
+    date: "2026",
     tags: ["love", "loss"],
     cover: "garden.PNG",
     lines: [
