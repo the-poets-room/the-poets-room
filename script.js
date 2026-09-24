@@ -1,5 +1,5 @@
 /* =========================================================
-   THE POET'S ROOM — BEHAVIOUR (batch 2)
+   THE POET'S ROOM — BEHAVIOUR (batch 3 — rich poems)
    ========================================================= */
 
 const PALETTE = [
@@ -9,6 +9,59 @@ const PALETTE = [
   { name: 'Muted Amber', hex: '#D4A24C' },
   { name: 'Slate Blue',  hex: '#6B7A99' }
 ];
+
+const poemAnim = {
+  phase: 'idle',
+  timers: [],
+  poem: null
+};
+
+function cancelAllTimers() {
+  poemAnim.timers.forEach(t => clearTimeout(t));
+  poemAnim.timers = [];
+}
+
+function scheduleTimer(fn, ms) {
+  const t = setTimeout(fn, ms);
+  poemAnim.timers.push(t);
+}
+
+function skipPoemAnimation() {
+  if (poemAnim.phase !== 'breath' && poemAnim.phase !== 'typing') return;
+
+  cancelAllTimers();
+
+  const overlay = document.getElementById('breath-overlay');
+  if (overlay) overlay.classList.add('done');
+
+  const body = document.getElementById('poem-body');
+  if (body && poemAnim.poem) {
+    const lines = body.querySelectorAll('.line');
+    poemAnim.poem.lines.forEach((text, i) => {
+      if (lines[i]) {
+        if (isRichLine(text)) {
+          lines[i].innerHTML = text;
+          lines[i].classList.add('rich');
+        } else {
+          lines[i].textContent = text || '\u00A0';
+        }
+        lines[i].style.opacity = '1';
+        lines[i].style.transform = 'none';
+        lines[i].classList.remove('typing-line');
+        lines[i].classList.add('finished');
+      }
+    });
+  }
+
+  const hint = document.getElementById('skip-hint');
+  if (hint) hint.classList.remove('visible');
+
+  poemAnim.phase = 'done';
+}
+
+function isRichLine(text) {
+  return /<br|<em|<span|class=/i.test(text);
+}
 
 function applyRandomAccent() {
   const isDark = document.body.classList.contains('dark');
@@ -38,16 +91,15 @@ function initTheme() {
   }
 }
 
-/* ---------- Time-of-day wash (Batch 2, feature 37) ---------- */
 function initTimeOfDay() {
   const h = new Date().getHours();
   let wash = 'transparent';
 
-  if (h >= 5 && h < 8)         wash = 'rgba(255, 200, 180, 0.14)';   // dawn — pale rose
-  else if (h >= 8 && h < 12)   wash = 'transparent';                   // morning — pure cream
-  else if (h >= 12 && h < 17)  wash = 'rgba(255, 240, 210, 0.10)';    // afternoon — warm
-  else if (h >= 17 && h < 20)  wash = 'rgba(255, 180, 110, 0.16)';    // dusk — golden
-  else                         wash = 'rgba(120, 100, 140, 0.10)';    // night — lavender
+  if (h >= 5 && h < 8)         wash = 'rgba(255, 200, 180, 0.14)';
+  else if (h >= 8 && h < 12)   wash = 'transparent';
+  else if (h >= 12 && h < 17)  wash = 'rgba(255, 240, 210, 0.10)';
+  else if (h >= 17 && h < 20)  wash = 'rgba(255, 180, 110, 0.16)';
+  else                         wash = 'rgba(120, 100, 140, 0.10)';
 
   document.documentElement.style.setProperty('--time-wash', wash);
 }
@@ -133,7 +185,11 @@ function renderPoemOfTheDay() {
   const today = new Date();
   const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
   const poem = poems[seed % poems.length];
-  const excerpt = poem.lines.slice(0, 2).join(' ');
+
+  const plainLines = poem.lines
+    .filter(l => l && l.trim() !== '' && !isRichLine(l))
+    .slice(0, 2);
+  const excerpt = plainLines.join(' ').slice(0, 160) || poem.title;
 
   container.innerHTML = `
     <div class="featured-card">
@@ -251,7 +307,12 @@ function renderPoem() {
 
   const body = document.getElementById('poem-body');
   body.innerHTML = poem.lines
-    .map((line, i) => `<div class="line" data-index="${i}">${line || '&nbsp;'}</div>`)
+    .map((line, i) => {
+      const rich = isRichLine(line);
+      const cls = rich ? 'line rich' : 'line';
+      const content = line ? line : '&nbsp;';
+      return `<div class="${cls}" data-index="${i}">${content}</div>`;
+    })
     .join('');
 
   const hidden = document.getElementById('comment-poem');
@@ -284,18 +345,24 @@ function renderPoem() {
   initVoiceReader(poem);
 }
 
-/* ---------- Breath prelude ---------- */
 function initBreathPrelude(poem) {
   const overlay = document.getElementById('breath-overlay');
   const circle = document.getElementById('breath-circle');
   const word = document.getElementById('breath-word');
   const body = document.getElementById('poem-body');
 
+  poemAnim.phase = 'breath';
+  poemAnim.poem = poem;
+  poemAnim.timers = [];
+
   if (!overlay || !circle || !word || !body) {
-    body.querySelectorAll('.line').forEach(el => {
-      el.style.opacity = '1';
-      el.style.transform = 'none';
-    });
+    poemAnim.phase = 'done';
+    if (body) {
+      body.querySelectorAll('.line').forEach(el => {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
+    }
     return;
   }
 
@@ -311,9 +378,10 @@ function initBreathPrelude(poem) {
 
   let i = 0;
   function step() {
+    if (poemAnim.phase !== 'breath') return;
     if (i >= cycle.length) {
       overlay.classList.add('done');
-      setTimeout(() => { writePoem(poem); }, 600);
+      scheduleTimer(() => { writePoem(poem); }, 600);
       return;
     }
     const phase = cycle[i];
@@ -322,23 +390,49 @@ function initBreathPrelude(poem) {
     void circle.offsetWidth;
     circle.classList.add(phase.cls);
     i++;
-    setTimeout(step, phase.ms);
+    scheduleTimer(step, phase.ms);
   }
 
-  setTimeout(step, 800);
+  scheduleTimer(step, 800);
 }
 
 function writePoem(poem) {
   const body = document.getElementById('poem-body');
   if (!body) return;
+
+  poemAnim.phase = 'typing';
+
+  const hint = document.getElementById('skip-hint');
+  if (hint) hint.classList.add('visible');
+
   const lines = body.querySelectorAll('.line');
   let lineIndex = 0;
 
   function writeLine() {
-    if (lineIndex >= lines.length) return;
+    if (poemAnim.phase !== 'typing') return;
+    if (lineIndex >= lines.length) {
+      poemAnim.phase = 'done';
+      if (hint) hint.classList.remove('visible');
+      return;
+    }
+
     const lineEl = lines[lineIndex];
-    const fullText = lineEl.innerHTML.replace(/&nbsp;/g, ' ');
-    lineEl.innerHTML = '';
+    const rawLine = poem.lines[lineIndex] || '';
+    const rich = isRichLine(rawLine);
+
+    if (rich) {
+      lineEl.innerHTML = rawLine || '&nbsp;';
+      lineEl.classList.add('rich');
+      lineEl.style.opacity = '1';
+      lineEl.style.transform = 'none';
+      lineEl.classList.add('finished');
+      lineIndex++;
+      scheduleTimer(writeLine, 200);
+      return;
+    }
+
+    const fullText = rawLine || '\u00A0';
+    lineEl.textContent = '';
     lineEl.classList.add('typing-line');
     lineEl.style.opacity = '1';
     lineEl.style.transform = 'none';
@@ -347,15 +441,16 @@ function writePoem(poem) {
     const speed = 32;
 
     function typeChar() {
+      if (poemAnim.phase !== 'typing') return;
       if (charIndex >= fullText.length) {
         lineEl.classList.add('finished');
         lineIndex++;
-        setTimeout(writeLine, 280);
+        scheduleTimer(writeLine, 280);
         return;
       }
-      lineEl.innerHTML = fullText.slice(0, charIndex + 1);
+      lineEl.textContent = fullText.slice(0, charIndex + 1);
       charIndex++;
-      setTimeout(typeChar, speed);
+      scheduleTimer(typeChar, speed);
     }
     typeChar();
   }
@@ -363,7 +458,6 @@ function writePoem(poem) {
   writeLine();
 }
 
-/* ---------- Candle timer ---------- */
 function initCandleTimer() {
   const btn = document.getElementById('candle-btn');
   const overlay = document.getElementById('candle-overlay');
@@ -415,7 +509,6 @@ function initCandleTimer() {
   });
 }
 
-/* ---------- Voice reader (Batch 2, feature 38) ---------- */
 function initVoiceReader(poem) {
   const btn = document.getElementById('voice-btn');
   const body = document.getElementById('poem-body');
@@ -428,7 +521,6 @@ function initVoiceReader(poem) {
 
   let speaking = false;
 
-  // Prefer an English voice if the browser offers one
   function pickVoice() {
     const voices = window.speechSynthesis.getVoices();
     if (!voices.length) return null;
@@ -436,6 +528,10 @@ function initVoiceReader(poem) {
         || voices.find(v => /en-US/i.test(v.lang))
         || voices.find(v => /^en/i.test(v.lang))
         || voices[0];
+  }
+
+  function stripHtml(s) {
+    return s.replace(/<[^>]+>/g, '').trim();
   }
 
   function stopSpeaking() {
@@ -452,9 +548,8 @@ function initVoiceReader(poem) {
     btn.textContent = '⏸';
 
     const lines = body.querySelectorAll('.line');
-    const plainLines = poem.lines.map(l => l.replace(/<[^>]+>/g, '').trim());
+    const plainLines = poem.lines.map(l => stripHtml(l));
 
-    // speak line by line for the glow effect
     let i = 0;
     function nextLine() {
       if (i >= plainLines.length || !speaking) {
@@ -464,7 +559,6 @@ function initVoiceReader(poem) {
       const lineText = plainLines[i];
       if (!lineText) { i++; nextLine(); return; }
 
-      // highlight
       lines.forEach(el => el.classList.remove('reading'));
       if (lines[i]) lines[i].classList.add('reading');
 
@@ -492,10 +586,8 @@ function initVoiceReader(poem) {
     else speak();
   });
 
-  // stop if the reader leaves
   window.addEventListener('beforeunload', stopSpeaking);
 
-  // some browsers need voices to load asynchronously
   if (window.speechSynthesis.getVoices().length === 0) {
     window.speechSynthesis.onvoiceschanged = () => {};
   }
@@ -625,7 +717,9 @@ function initQuoteCard(currentPoem) {
 
   if (!modal || !shareBtn || !currentPoem) return;
 
-  const nonEmptyLines = currentPoem.lines.filter(l => l.trim() !== '');
+  const nonEmptyLines = currentPoem.lines
+    .filter(l => l.trim() !== '' && !isRichLine(l));
+
   select.innerHTML = nonEmptyLines
     .map((line, i) => `<option value="${i}">${line}</option>`)
     .join('');
@@ -745,6 +839,12 @@ document.addEventListener('DOMContentLoaded', () => {
   initReactions();
   initCommentForm();
   initScrollProgress();
+
+  document.addEventListener('click', () => {
+    if (poemAnim.phase === 'breath' || poemAnim.phase === 'typing') {
+      skipPoemAnimation();
+    }
+  });
 
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
