@@ -1,18 +1,5 @@
 /* =========================================================
    THE POET'S ROOM — POEMS
-   ---------------------------------------------------------
-   HOW TO ADD A NEW POEM:
-   1. Copy one whole { ... } block below (from { to },)
-   2. Paste it at the TOP of the poems array (newest first)
-   3. Change the fields:
-      - id:      short unique name, no spaces (used in the URL)
-      - title:   the poem's title
-      - date:    e.g. "March 2025"
-      - tags:    list of themes, e.g. ["love", "loss"]
-      - cover:   image URL OR leave "" for an auto-generated cover
-      - lines:   each line in quotes, comma-separated.
-                 use "" for a blank line (stanza break)
-   4. Save and commit. Done.
    ========================================================= */
 
 const poems = [
@@ -21,7 +8,7 @@ const poems = [
     title: "Grandma's Kitchen",
     date: "2026",
     tags: ["family", "home", "ghana", "legacy"],
-    cover: "cover: "https://raw.githubusercontent.com/the-poets-room/the-poets-room/main/grandmas-kitchen.PNG",",
+    cover: "grandmas-kitchen.PNG",
     lines: [
       "In the heart of Accra, where the sun kisses the rusted rooftops and the air hums with the rhythm of palm fronds, there lies a kitchen, a sanctuary of love and sustenance. It belongs to Grandma Akua, the matriarch of our family, her laughter etched into the wooden beams, her wisdom simmering in the bubbling pots.",
       "",
