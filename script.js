@@ -1,5 +1,5 @@
 /* =========================================================
-   THE POET'S ROOM — BEHAVIOUR (final)
+   THE POET'S ROOM — BEHAVIOUR (final, batch 1)
    ========================================================= */
 
 const PALETTE = [
@@ -237,9 +237,7 @@ function renderPoem() {
 
   const body = document.getElementById('poem-body');
   body.innerHTML = poem.lines
-    .map((line, i) =>
-      `<div class="line" style="animation-delay:${0.15 + i * 0.18}s">${line || '&nbsp;'}</div>`
-    )
+    .map((line, i) => `<div class="line" data-index="${i}">${line || '&nbsp;'}</div>`)
     .join('');
 
   const hidden = document.getElementById('comment-poem');
@@ -267,6 +265,139 @@ function renderPoem() {
 
   initBookmarkButton(poem.id);
   initQuoteCard(poem);
+  initBreathPrelude(poem);
+  initCandleTimer();
+}
+
+function initBreathPrelude(poem) {
+  const overlay = document.getElementById('breath-overlay');
+  const circle = document.getElementById('breath-circle');
+  const word = document.getElementById('breath-word');
+  const body = document.getElementById('poem-body');
+
+  if (!overlay || !circle || !word || !body) {
+    body.querySelectorAll('.line').forEach(el => {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    });
+    return;
+  }
+
+  body.querySelectorAll('.line').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(8px)';
+  });
+
+  const cycle = [
+    { word: 'breathe in',  cls: 'in',  ms: 4000 },
+    { word: 'breathe out', cls: 'out', ms: 4000 }
+  ];
+
+  let i = 0;
+  function step() {
+    if (i >= cycle.length) {
+      overlay.classList.add('done');
+      setTimeout(() => {
+        writePoem(poem);
+      }, 600);
+      return;
+    }
+    const phase = cycle[i];
+    word.textContent = phase.word;
+    circle.classList.remove('in', 'out');
+    void circle.offsetWidth;
+    circle.classList.add(phase.cls);
+    i++;
+    setTimeout(step, phase.ms);
+  }
+
+  setTimeout(step, 800);
+}
+
+function writePoem(poem) {
+  const body = document.getElementById('poem-body');
+  if (!body) return;
+  const lines = body.querySelectorAll('.line');
+  let lineIndex = 0;
+
+  function writeLine() {
+    if (lineIndex >= lines.length) return;
+    const lineEl = lines[lineIndex];
+    const fullText = lineEl.innerHTML.replace(/&nbsp;/g, ' ');
+    lineEl.innerHTML = '';
+    lineEl.classList.add('typing-line');
+    lineEl.style.opacity = '1';
+    lineEl.style.transform = 'none';
+
+    let charIndex = 0;
+    const speed = 32;
+
+    function typeChar() {
+      if (charIndex >= fullText.length) {
+        lineEl.classList.add('finished');
+        lineIndex++;
+        setTimeout(writeLine, 280);
+        return;
+      }
+      lineEl.innerHTML = fullText.slice(0, charIndex + 1);
+      charIndex++;
+      setTimeout(typeChar, speed);
+    }
+    typeChar();
+  }
+
+  writeLine();
+}
+
+function initCandleTimer() {
+  const btn = document.getElementById('candle-btn');
+  const overlay = document.getElementById('candle-overlay');
+  const timeEl = document.getElementById('candle-time');
+  const stopBtn = document.getElementById('candle-stop');
+  if (!btn || !overlay || !timeEl || !stopBtn) return;
+
+  let interval = null;
+  let remaining = 180;
+
+  function fmt(sec) {
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return `${m}:${s < 10 ? '0' : ''}${s}`;
+  }
+
+  function start() {
+    remaining = 180;
+    timeEl.textContent = fmt(remaining);
+    overlay.classList.add('open');
+    btn.classList.add('active');
+
+    interval = setInterval(() => {
+      remaining--;
+      timeEl.textContent = fmt(remaining);
+      if (remaining <= 0) {
+        stop();
+        timeEl.textContent = 'done';
+      }
+    }, 1000);
+  }
+
+  function stop() {
+    clearInterval(interval);
+    interval = null;
+    overlay.classList.remove('open');
+    btn.classList.remove('active');
+  }
+
+  btn.addEventListener('click', () => {
+    if (overlay.classList.contains('open')) stop();
+    else start();
+  });
+
+  stopBtn.addEventListener('click', stop);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.classList.contains('open')) stop();
+  });
 }
 
 function goToPoem(index) {
