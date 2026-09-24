@@ -16,7 +16,6 @@
   --poem-size: 1.2rem;
 }
 
-
 body.dark {
   --bg: #462639;
   --bg-elev: #563148;
@@ -25,7 +24,6 @@ body.dark {
   --rule: #6B4059;
   --shadow: 0 10px 30px rgba(0,0,0,0.45);
 }
-
 
 html { scroll-behavior: smooth; }
 
@@ -389,14 +387,6 @@ body.dark::before { opacity: 0.06; }
   line-height: 2;
   transition: font-size 0.3s ease;
 }
-.poem-body .line {
-  opacity: 0;
-  transform: translateY(8px);
-  animation: lineIn 1.1s ease forwards;
-}
-@keyframes lineIn {
-  to { opacity: 1; transform: translateY(0); }
-}
 
 body.focus-mode .site-header,
 body.focus-mode .site-footer,
@@ -681,6 +671,140 @@ body.focus-mode .poem-page { max-width: 560px; }
   min-height: 1.2em;
 }
 
+/* =========================================================
+   BATCH 1 — Poem ritual (breath, writing, sit-with-this)
+   ========================================================= */
+
+.breath-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9998;
+  transition: opacity 1s ease, visibility 1s ease;
+}
+.breath-overlay.done {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.breath-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  transition: transform 4s ease-in-out, box-shadow 4s ease-in-out;
+}
+.breath-circle.in {
+  transform: scale(1.6);
+  box-shadow: 0 0 60px var(--accent-soft);
+}
+.breath-circle.out {
+  transform: scale(1);
+  box-shadow: 0 0 0 transparent;
+}
+
+.breath-word {
+  margin-top: 2rem;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.8rem;
+  color: var(--accent);
+  transition: opacity 0.4s ease;
+}
+
+.poem-body .typing-line {
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
+.poem-body .typing-line::after {
+  content: '|';
+  color: var(--accent);
+  animation: blink 0.9s steps(2) infinite;
+  margin-left: 2px;
+}
+.poem-body .typing-line.finished::after {
+  content: '';
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+#candle-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.candle-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+.candle-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.candle-flame {
+  width: 30px;
+  height: 45px;
+  background: radial-gradient(circle at 50% 70%, #ffd166, #ff8c42 60%, #d64545 100%);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  filter: blur(1px);
+  animation: flicker 1.8s infinite ease-in-out;
+  box-shadow: 0 0 60px 20px rgba(255, 180, 100, 0.35);
+  margin-bottom: 3rem;
+}
+@keyframes flicker {
+  0%, 100% { transform: scale(1) rotate(-1deg); opacity: 1; }
+  25%      { transform: scale(1.05) rotate(1deg); opacity: 0.95; }
+  50%      { transform: scale(0.97) rotate(-1deg); opacity: 1; }
+  75%      { transform: scale(1.03) rotate(2deg); opacity: 0.92; }
+}
+
+.candle-time {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 3rem;
+  color: #F2E6EC;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+.candle-hint {
+  font-style: italic;
+  color: #C9AEC0;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+.candle-stop {
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-style: italic;
+  padding: 0.6rem 1.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  background: transparent;
+  color: #F2E6EC;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.candle-stop:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 @media (max-width: 520px) {
   .poem-grid { grid-template-columns: 1fr; gap: 1.5rem; }
   .brand { font-size: 1.4rem; }
@@ -690,4 +814,7 @@ body.focus-mode .poem-page { max-width: 560px; }
   .nav-btn { width: 100%; }
   .quote-modal-inner { padding: 1rem; }
   .quote-actions { flex-direction: column; }
+  .breath-word { font-size: 1.4rem; }
+  .candle-time { font-size: 2.4rem; }
+  .candle-flame { width: 24px; height: 36px; }
 }
