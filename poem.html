@@ -25,12 +25,19 @@
   </header>
 
   <main class="poem-page" id="poem-page">
+
+    <div class="breath-overlay" id="breath-overlay">
+      <div class="breath-circle" id="breath-circle"></div>
+      <p class="breath-word" id="breath-word">breathe in</p>
+    </div>
+
     <div class="poem-toolbar">
       <a href="index.html" class="back-link">← back to all poems</a>
       <div class="toolbar-actions">
         <button id="bookmark-btn" title="Save this poem">🤍</button>
         <button id="share-btn" title="Make a quote card">🖼️</button>
         <button id="focus-toggle" title="Focus reading mode">📖</button>
+        <button id="candle-btn" title="Sit with this poem">🕯️</button>
         <button id="font-down" title="Smaller text">A−</button>
         <button id="font-up" title="Larger text">A+</button>
       </div>
@@ -91,6 +98,13 @@
         <p class="quote-status" id="quote-status"></p>
       </div>
     </div>
+  </div>
+
+  <div class="candle-overlay" id="candle-overlay">
+    <div class="candle-flame"></div>
+    <p class="candle-time" id="candle-time">3:00</p>
+    <p class="candle-hint">sit with this poem</p>
+    <button class="candle-stop" id="candle-stop">✕ done</button>
   </div>
 
   <script src="poems.js"></script>
