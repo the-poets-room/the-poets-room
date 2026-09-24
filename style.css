@@ -1,5 +1,5 @@
 /* =========================================================
-   THE POET'S ROOM — STYLES (final)
+   THE POET'S ROOM — STYLES (batch 2)
    ========================================================= */
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -14,6 +14,7 @@
   --rule: #e7dfd2;
   --shadow: 0 10px 30px rgba(0,0,0,0.06);
   --poem-size: 1.2rem;
+  --time-wash: transparent;
 }
 
 body.dark {
@@ -33,7 +34,7 @@ body {
   background: var(--bg);
   color: var(--ink);
   line-height: 1.75;
-  transition: background 0.6s ease, color 0.6s ease;
+  transition: background 1.2s ease, color 0.6s ease;
   min-height: 100vh;
   opacity: 0;
   animation: fadeIn 1s ease forwards;
@@ -42,6 +43,18 @@ body {
 
 body.loading { opacity: 0; }
 @keyframes fadeIn { to { opacity: 1; } }
+
+/* time-of-day tint overlays the background subtly */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: var(--time-wash);
+  pointer-events: none;
+  z-index: 0;
+  transition: background 2s ease;
+}
+body.dark::after { background: transparent; }
 
 body::before {
   content: '';
@@ -335,6 +348,16 @@ body.dark::before { opacity: 0.06; }
   color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-soft);
 }
+#voice-btn.speaking {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 3px var(--accent-soft); }
+  50%      { box-shadow: 0 0 0 8px transparent; }
+}
 
 .poem-cover {
   aspect-ratio: 16 / 10;
@@ -386,6 +409,10 @@ body.dark::before { opacity: 0.06; }
   font-size: var(--poem-size);
   line-height: 2;
   transition: font-size 0.3s ease;
+}
+.poem-body .line.reading {
+  color: var(--accent);
+  transition: color 0.3s ease;
 }
 
 body.focus-mode .site-header,
