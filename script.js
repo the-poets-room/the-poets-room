@@ -11,7 +11,13 @@ const PALETTE = [
 ];
 
 function applyRandomAccent() {
-  const pick = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+  const isDark = document.body.classList.contains('dark');
+  let pick;
+  if (isDark) {
+    pick = PALETTE.find(p => p.name === 'Muted Amber');
+  } else {
+    pick = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+  }
   document.documentElement.style.setProperty('--accent', pick.hex);
   document.documentElement.style.setProperty('--accent-soft', pick.hex + '22');
 }
@@ -27,6 +33,7 @@ function initTheme() {
       const dark = document.body.classList.contains('dark');
       localStorage.setItem('theme', dark ? 'dark' : 'light');
       toggle.textContent = dark ? '☀️' : '🌙';
+      applyRandomAccent();
     });
   }
 }
