@@ -13,7 +13,7 @@ const poems = [{
     title: "A Love That Knows My Name",
     date: "2026",
     tags: ["love", "devotion", "longing"],
-    cover: "a-love-that-knows-my-name.PNG",
+    cover: "A love that knows my name.PNG",
     lines: [
       "<span class=\"opener\">I have loved you in languages I cannot speak,</span><br>In prayers I forget to finish,<br>In the quiet moments when the world is asleep,<br>And my heart has too much to mention.",
       "I have loved you in the manner of old men<br>Who still keep letters from women they lost,<br>In the manner of rivers that travel for miles<br>Without ever asking the sea what it costs.",
