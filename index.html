@@ -4,56 +4,97 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Poet's Room</title>
-  <meta name="description" content="A quiet place for words — poems by Privilege Akrofi (Privilege the Poet)." />
-  <link rel="alternate" type="application/rss+xml" title="The Poet's Room" href="feed.xml" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background-color: #0f0f12;
+      color: #e8e6e3;
+      font-family: Georgia, serif;
+      padding: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+    h1 { font-weight: 400; text-align: center; color: #d4a373; }
+    .poem-card {
+      background: #1c1a24;
+      padding: 2rem;
+      margin-bottom: 3rem;
+      border-radius: 8px;
+      border: 1px solid #333;
+    }
+    .poem-title { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .poem-meta { font-size: 0.9rem; color: #a8a29e; margin-bottom: 2rem; }
+    .poem-stanza { margin-bottom: 1.5rem; font-size: 1.1rem; }
+    
+    /* Your custom classes from the array */
+    .opener { font-style: italic; color: #d4a373; font-size: 1.2rem; }
+    .divider { 
+      display: block; text-align: center; margin: 2rem 0; 
+      color: #d4a373; letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem;
+    }
+    .divider span { border-bottom: 1px solid #d4a373; padding-bottom: 4px; }
+  </style>
 </head>
-<body class="loading">
+<body>
 
-  <div class="scroll-progress" id="scroll-progress"></div>
+  <h1>The Poet's Room</h1>
+  <div id="poems-container"></div>
 
-  <div id="welcome">
-    <div class="welcome-inner">
-      <h1 class="welcome-title">The Poet's Room</h1>
-      <p class="welcome-sub">a quiet place for words</p>
-    </div>
-  </div>
+  <script>
+    // ==========================================
+    // PASTE YOUR POEMS ARRAY HERE
+    // ==========================================
+    const poems = [
+      {
+        id: "a-love-that-knows-my-name",
+        title: "A Love That Knows My Name",
+        date: "2026",
+        tags: ["love", "devotion", "longing"],
+        cover: "A love that knows my name.PNG",
+        lines: [
+          "<span class=\"opener\">I have loved you in languages I cannot speak,</span><br>In prayers I forget to finish,<br>In the quiet moments when the world is asleep,<br>And my heart has too much to mention.",
+          "I have loved you in the manner of old men<br>Who still keep letters from women they lost,<br>In the manner of rivers that travel for miles<br>Without ever asking the sea what it costs.",
+          // ... (Rest of your array goes here)
+        ]
+      }
+      // ... (Rest of your poems go here)
+    ];
 
-  <header class="site-header">
-    <a href="index.html" class="brand">The Poet's Room</a>
-    <nav>
-      <a href="about.html">About</a>
-      <a href="saved.html">Saved</a>
-      <button id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
-    </nav>
-  </header>
+    // ==========================================
+    // RENDERING LOGIC (Don't change this)
+    // ==========================================
+    const container = document.getElementById('poems-container');
 
-  <main>
-    <section class="hero">
-      <h2 class="hero-title" id="greeting">Welcome, wanderer</h2>
-      <p class="hero-sub">pick a cover, open a poem, stay a while.</p>
-      <p class="streak" id="streak"></p>
-      <div class="hero-actions">
-        <button id="wander-btn" class="btn-soft">🎲 Wander to a random poem</button>
-      </div>
-    </section>
+    if (poems && poems.length > 0) {
+      poems.forEach(poem => {
+        const card = document.createElement('div');
+        card.className = 'poem-card';
+        
+        const title = document.createElement('h2');
+        title.className = 'poem-title';
+        title.textContent = poem.title;
+        
+        const meta = document.createElement('div');
+        meta.className = 'poem-meta';
+        meta.textContent = `${poem.date} • ${poem.tags.join(', ')}`;
 
-    <section class="featured" id="featured"></section>
+        const linesContainer = document.createElement('div');
+        
+        poem.lines.forEach(line => {
+          const p = document.createElement('p');
+          p.className = 'poem-stanza';
+          p.innerHTML = line; // Uses innerHTML so your <br> and <span> tags work!
+          linesContainer.appendChild(p);
+        });
 
-    <section class="poem-grid-section">
-      <h3 class="section-label">all poems</h3>
-      <div class="poem-grid" id="poem-grid"></div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <p>&copy; <span id="year"></span> Privilege Akrofi · Privilege the Poet</p>
-  </footer>
-
-  <script src="poems.js"></script>
-  <script src="script.js"></script>
+        card.appendChild(title);
+        card.appendChild(meta);
+        card.appendChild(linesContainer);
+        container.appendChild(card);
+      });
+    } else {
+      container.innerHTML = "<p>No poems found.</p>";
+    }
+  </script>
 </body>
 </html>
