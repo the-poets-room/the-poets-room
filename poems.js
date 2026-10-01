@@ -8,7 +8,28 @@
      <span class="opener">...</span>          for a styled opening line
    ========================================================= */
 
-const poems = [
+const poems = [{
+    id: "a-love-that-knows-my-name",
+    title: "A Love That Knows My Name",
+    date: "2026",
+    tags: ["love", "devotion", "longing"],
+    cover: "a-love-that-knows-my-name.PNG",
+    lines: [
+      "<span class=\"opener\">I have loved you in languages I cannot speak,</span><br>In prayers I forget to finish,<br>In the quiet moments when the world is asleep,<br>And my heart has too much to mention.",
+      "I have loved you in the manner of old men<br>Who still keep letters from women they lost,<br>In the manner of rivers that travel for miles<br>Without ever asking the sea what it costs.",
+      "And if love were a market in Makola,<br>I'd purchase every hour you have left,<br>Not with money, but with the little of me<br>That life hasn't already spent.",
+      "You see, I have known people who felt like home,<br>Yet left me homeless when they departed.<br>I have held hands that promised forever,<br>Only to learn that forever can be short-lived.",
+      "But you...<br>You make me want to believe in things<br>I once considered too beautiful to be true.<br>You make a man who has mastered leaving<br>Consider the possibility of staying, too.",
+      "And I do not promise you a garden<br>Where the flowers never wither or die.<br>I promise to water the roots when the rain forgets,<br>And sit with you beneath the unforgiving sky.",
+      "Because what is love if not the courage<br>To remain when the beautiful things become ordinary?<br>To find poetry in your uncombed mornings,<br>And call even your silence extraordinary?",
+      "I want to know the woman behind your laughter,<br>The little girl hidden beneath your pride,<br>The fears you dress in confidence,<br>And the tears you have taught your eyes to hide.",
+      "I want to be there when the world is unkind,<br>When your plans fall apart like poorly built walls,<br>When you have nothing left to offer but silence,<br>And even your smile no longer answers my calls.",
+      "Not because I believe I can save you,<br>But because I know what it means to be human.<br>And if the world insists on making you strong,<br>Let me be the place where you need not prove it.",
+      "I have no interest in loving you halfway,<br>Or making a home out of temporary affection.<br>I want the kind of love that survives its own questions,<br>That finds its way home after every imperfection.",
+      "And when my tongue fails to explain what I feel,<br>When words become too small for the truth,<br>Remember that somewhere in this restless world,<br>There is a heart that has made a home of you.",
+      "For I have written about love in a thousand ways,<br>Given heartbreak a voice and longing a name,<br>But never have I understood the meaning of devotion<br>Until I found a love that knows my name."
+    ]
+  }
   {
     id: "her-testament",
     title: "Her Testament",
