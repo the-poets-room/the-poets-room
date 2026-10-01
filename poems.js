@@ -30,7 +30,7 @@ const poems = [
       "And when my tongue fails to explain what I feel,<br>When words become too small for the truth,<br>Remember that somewhere in this restless world,<br>There is a heart that has made a home of you.",
       "For I have written about love in a thousand ways,<br>Given heartbreak a voice and longing a name,<br>But never have I understood the meaning of devotion<br>Until I found a love that knows my name."
     ]
-  }, // <--- THIS WAS THE MISSING COMMA
+  }, 
   {
     id: "her-testament",
     title: "Her Testament",
