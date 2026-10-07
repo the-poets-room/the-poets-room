@@ -13,7 +13,7 @@ const poems = [{
     title: "The Escape That Writes",
     date: "2026",
     tags: ["survival", "poetry", "healing", "grief"],
-    cover: "The escape that writes.PNG",
+    cover: "The Escape That Writes .PNG",
     lines: [
       "<span class=\"opener\">I wrote my first line when I lost my closest.",
       "It started with stories to cover the sorrow.",
