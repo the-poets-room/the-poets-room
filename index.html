@@ -1,100 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Poet's Room</title>
-  <style>
-    body {
-      background-color: #0f0f12;
-      color: #e8e6e3;
-      font-family: Georgia, serif;
-      padding: 2rem;
-      max-width: 800px;
-      margin: 0 auto;
-      line-height: 1.8;
-    }
-    h1 { font-weight: 400; text-align: center; color: #d4a373; }
-    .poem-card {
-      background: #1c1a24;
-      padding: 2rem;
-      margin-bottom: 3rem;
-      border-radius: 8px;
-      border: 1px solid #333;
-    }
-    .poem-title { font-size: 1.8rem; margin-bottom: 0.5rem; }
-    .poem-meta { font-size: 0.9rem; color: #a8a29e; margin-bottom: 2rem; }
-    .poem-stanza { margin-bottom: 1.5rem; font-size: 1.1rem; }
-    
-    /* Your custom classes from the array */
-    .opener { font-style: italic; color: #d4a373; font-size: 1.2rem; }
-    .divider { 
-      display: block; text-align: center; margin: 2rem 0; 
-      color: #d4a373; letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem;
-    }
-    .divider span { border-bottom: 1px solid #d4a373; padding-bottom: 4px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Poet's Room</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header>
+        <h1>The Poet's Room</h1>
+    </header>
+    <main id="poem-container">
+        <!-- Poems will be injected here by JavaScript -->
+    </main>
 
-  <h1>The Poet's Room</h1>
-  <div id="poems-container"></div>
+    <script src="poems.js"></script>
+    <script>
+        // Function to render the poems from your poems.js file
+        const container = document.getElementById('poem-container');
+        if (typeof poems !== 'undefined' && Array.isArray(poems)) {
+            poems.forEach(poem => {
+                const card = document.createElement('div');
+                card.className = 'poem-card';
+                
+                let linesHTML = '';
+                if (poem.lines) {
+                    poem.lines.forEach(line => {
+                        linesHTML += `<p>${line}</p>`;
+                    });
+                }
 
-  <script>
-    // ==========================================
-    // PASTE YOUR POEMS ARRAY HERE
-    // ==========================================
-    const poems = [
-      {
-        id: "a-love-that-knows-my-name",
-        title: "A Love That Knows My Name",
-        date: "2026",
-        tags: ["love", "devotion", "longing"],
-        cover: "A love that knows my name.PNG",
-        lines: [
-          "<span class=\"opener\">I have loved you in languages I cannot speak,</span><br>In prayers I forget to finish,<br>In the quiet moments when the world is asleep,<br>And my heart has too much to mention.",
-          "I have loved you in the manner of old men<br>Who still keep letters from women they lost,<br>In the manner of rivers that travel for miles<br>Without ever asking the sea what it costs.",
-          // ... (Rest of your array goes here)
-        ]
-      }
-      // ... (Rest of your poems go here)
-    ];
-
-    // ==========================================
-    // RENDERING LOGIC (Don't change this)
-    // ==========================================
-    const container = document.getElementById('poems-container');
-
-    if (poems && poems.length > 0) {
-      poems.forEach(poem => {
-        const card = document.createElement('div');
-        card.className = 'poem-card';
-        
-        const title = document.createElement('h2');
-        title.className = 'poem-title';
-        title.textContent = poem.title;
-        
-        const meta = document.createElement('div');
-        meta.className = 'poem-meta';
-        meta.textContent = `${poem.date} • ${poem.tags.join(', ')}`;
-
-        const linesContainer = document.createElement('div');
-        
-        poem.lines.forEach(line => {
-          const p = document.createElement('p');
-          p.className = 'poem-stanza';
-          p.innerHTML = line; // Uses innerHTML so your <br> and <span> tags work!
-          linesContainer.appendChild(p);
-        });
-
-        card.appendChild(title);
-        card.appendChild(meta);
-        card.appendChild(linesContainer);
-        container.appendChild(card);
-      });
-    } else {
-      container.innerHTML = "<p>No poems found.</p>";
-    }
-  </script>
+                card.innerHTML = `
+                    <h2>${poem.title}</h2>
+                    <div class="meta">${poem.date} • ${poem.tags.join(', ')}</div>
+                    <div class="poem-content">${linesHTML}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+    </script>
 </body>
 </html>
