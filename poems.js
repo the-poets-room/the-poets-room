@@ -8,7 +8,39 @@
      <span class="opener">...</span>          for a styled opening line
    ========================================================= */
 
-const poems = [
+const poems = [{
+    id: "the-escape-that-writes",
+    title: "The Escape That Writes",
+    date: "2026",
+    tags: ["survival", "poetry", "healing", "grief"],
+    cover: "The escape that writes.PNG",
+    lines: [
+      "<span class=\"opener\">I wrote my first line when I lost my closest.",
+      "It started with stories to cover the sorrow.",
+      "It started as a distraction.",
+      "Then it became a habit.",
+      "Now it’s not just an escape but a mirror to give the unseen a voice.",
+      "Every day I thank whatever gods may be to my weary soul for gifting me this curse.",
+      "<br>",
+      "Every failed attempt at love becomes a congregation of lines composted into a hymn of life.",
+      "A hymn for a drunken and lost choir to sing,",
+      "to sober their lost but found souls.",
+      "I bless the day I wrote my very first word that turned into poetry that I can create imagery for people to be at peace with their chaos.",
+      "<br>",
+      "Some question why I call it an escape;",
+      "I call it an escape because here alone am I beyond the knife's reach.",
+      "Here is where I trade the spilling of my blood upon these pearly sheets for the spilling of ink.",
+      "This is the only thread tethering me from a wooden box carried by six who never knew me, mourned by those who never cared to know my grief.",
+      "<br>",
+      "Maybe I have been selfish keeping everything in me…",
+      "But blame me or blame not, for you made me a stranger in a place I once called home.",
+      "But still in the worrisome grasp of circumstance I have not cried aloud.",
+      "<br>",
+      "Black as the shade of storm coming,",
+      "it shall and will find me unafraid, for I am the master of destiny and the captain of this fate.",
+      "I will continue to write your problems away and give you food for thought and rhymes to play."
+    ]
+  },
   {
     id: "a-love-that-knows-my-name",
     title: "A Love That Knows My Name",
